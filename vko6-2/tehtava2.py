@@ -15,6 +15,8 @@ Pushaa myös nämä muutokset GitHubiin
 Palautus sama GitHub repositorion linkki """
 import argparse
 from azure.storage.blob import BlobClient
+import os.path
+import time
 
 parser = argparse.ArgumentParser()
 parser.add_argument("rivit", type=int,
@@ -34,18 +36,25 @@ def downloadBlob():
 
 downloadBlob()
 
-try:
-    file1 = open('checkpoint1.txt', 'r')
-    count = 0
-    lista = []
-    for line in file1:
-        lista.append(line.strip('\n'))
-    lista.sort(key=lambda x: len(x))         
-    for line in lista:
-        print(line)
-        count += 1
-        if count == args.rivit:
-            break
-    file1.close()
-except:
-    print("An exception occurred")
+while not os.path.exists('checkpoint1.txt'):
+    time.sleep(1)
+
+if os.path.isfile('checkpoint1.txt'):
+    try:
+        file1 = open('checkpoint1.txt', 'r')
+        count = 0
+        lista = []
+        for line in file1:
+            lista.append(line.strip('\n'))
+        lista.sort(key=lambda x: len(x))         
+        for line in lista:
+            print(line)
+            count += 1
+            if count == args.rivit:
+                break
+        file1.close()
+    except:
+        print("An exception occurred")
+
+else:
+    raise ValueError("%s isn't a file!" % 'checkpoint1.txt')
