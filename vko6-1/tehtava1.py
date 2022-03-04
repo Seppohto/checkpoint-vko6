@@ -46,7 +46,7 @@ def fetchandwrite():
 
     if r.status_code == 200:
         vastaus = r.json()
-        with open("checkpoint.txt", 'a') as file :
+        with open("./vko6-1/checkpoint.txt", 'a') as file :
             for i in vastaus['items']:
                 file.write(i['parameter']+'\n')
 
